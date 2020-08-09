@@ -31,13 +31,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity prop_thermal is
 Port (a,b:in std_logic_vector(6 downto 1);
-      sum0,sum1:out std_logic_vector(6 downto 1));
+		sel:out std_logic;
+		sum0,sum1:out std_logic_vector(6 downto 1));
 end prop_thermal;
 
 architecture Behavioral of prop_thermal is
 
 signal x,y,z:std_logic_vector(5 downto 0);
-signal t0,t1,t2,t3,t4,t5,sel:std_logic;
+signal t0,t1,t2,t3,t4,t5:std_logic;
 signal p:std_logic_vector(4 downto 0);
 signal q:std_logic_vector(3 downto 0);
 signal r:std_logic_vector(2 downto 0);
@@ -86,12 +87,11 @@ r(2)<=q(2) and q(3);
 d(0)<=r(0) and r(1);
 d(1)<=r(1) and r(2);
 
-sel <= y(0) nor y(1) nor y(2) nor y(3) nor y(4) nor y(5);
-
-t0<=x(0) nor x(1) nor x(2) nor x(3) nor x(4) nor x(5);
-t1<=p(0) nor p(1) nor p(2) nor p(3) nor p(4);
-t2<=q(0) nor q(1) nor q(2) nor q(3);
-t3<=r(0) nor r(1) nor r(2);
+sel <= ((y(0) nor y(1)) nor y(2)) nor (y(3) nor (y(4) nor y(5)));
+t0<=((x(0) nor x(1)) nor (x(2) nor x(3))) nor (x(4) nor x(5));
+t1<=(p(0) nor (p(1) nor p(2))) nor (p(3) nor p(4));
+t2<=(q(0) nor q(1)) nor (q(2) nor q(3));
+t3<=(r(0) nor r(1)) nor r(2);
 t4<=d(0) nor d(1);
 t5<=d(0) nand d(1);
 
@@ -108,5 +108,6 @@ sum1(4)<=not t4;
 sum1(3)<=not t3;
 sum1(2)<=not t2;
 sum1(1)<=not t1;
+
 
 end Behavioral;

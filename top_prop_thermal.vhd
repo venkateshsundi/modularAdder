@@ -34,21 +34,25 @@ Port (a,b:in std_logic_vector(6 downto 1);
          sum:out std_logic_vector(6 downto 1));
 End top_prop_thermal;
 architecture behavioural of top_prop_thermal is
-Component prop_mux  
-Port (sel:in std_logic;
-      Sum0,sum1:in std_logic vector(6 downto 1);
-      Sum:out std_logic_vector(6 downto 1));
-End component;
+
 Component prop_thermal 
 Port (a,b:in std_logic_vector(6 downto 1);
-      sum0,sum1:out std_logic_vector(6 downto 1));
+		sel:out std_logic;
+		sum0,sum1:out std_logic_vector(6 downto 1));
 end Component;
 
-signal x,y,z:std_logic_vector(5 downto 0);
-signal t,sel:std_logic;
+Component prop_mux  
+Port (sel:in std_logic;
+      Sum0,sum1:in std_logic_vector(6 downto 1);
+      Sum:out std_logic_vector(6 downto 1));
+End component;
+
+signal sum0,sum1:std_logic_vector(6 downto 1);
+signal sel:std_logic;
+
 Begin
 
-u1:prop_thermal port map(a,b,sum0,sum1);
+u1:prop_thermal port map(a,b,sel,sum0,sum1);
 u2:prop_mux  port map(sel,sum0,sum1,sum);
 
 End behavioural;
